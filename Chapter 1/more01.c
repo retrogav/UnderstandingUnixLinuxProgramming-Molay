@@ -9,7 +9,7 @@
 */
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> // for exit()
 
 #define PAGELEN 24
 #define LINELEN 512
