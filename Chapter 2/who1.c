@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <stdlib.h> // for exit()
 #include <time.h>
-#include <string.h> /* for strcpy() */
 
 #define SHOWHOST // include remote machine on output
 
@@ -74,7 +73,7 @@ void show_info(struct utmp *utbufp)
     printf("\n");
 }
 
-/*  displays time in a format fitfor human consumption.
+/*  displays time in a format fit for human consumption.
     uses ctime to build a string then picks parts out of it.
     Note: %12.12s prints a string 12 chars wide and limits
     it to 12 chars.
