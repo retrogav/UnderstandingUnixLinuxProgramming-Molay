@@ -1,4 +1,6 @@
-/*  more01.c version 0.2
+/*  https://github.com/retrogav/UnderstandingUnixLinuxProgramming-Molay
+
+    more01.c version 0.2
     read and print 24 lines then pause for a few special commands
 
     Version history

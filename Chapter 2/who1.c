@@ -1,4 +1,6 @@
-/*  who1.c version 0.3
+/*  https://github.com/retrogav/UnderstandingUnixLinuxProgramming-Molay
+
+    who1.c version 0.3
     A version of the who program
     Open, read UTMP file and show results
 
