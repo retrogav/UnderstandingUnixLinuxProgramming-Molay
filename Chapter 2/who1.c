@@ -1,11 +1,12 @@
-/*  who1.c version 0.2
+/*  who1.c version 0.3
     A version of the who program
     Open, read UTMP file and show results
 
     Version history
     0.1 first ver
     0.2 supress empty records
-        formats time correctly            
+        formats time correctly
+    0.3 align formating of logon time to look the same as who           
 */
 
 #include <stdio.h>
@@ -17,7 +18,7 @@
 
 #define SHOWHOST // include remote machine on output
 
-void showtime(long);
+void showtime(long timeval);
 void show_info(struct utmp *utbufp);
 
 int main()
@@ -57,7 +58,7 @@ void show_info(struct utmp *utbufp)
                     to be printed is shorter than this number, the result is
                     padded with blank spaces
         .number     precision. The minimum number of digits to be written
-    */
+    */   
     printf("%-8.8s", utbufp->ut_name); // the logname
     printf(" ");
     printf("%-12.8s", utbufp->ut_line); // the tty
@@ -74,18 +75,14 @@ void show_info(struct utmp *utbufp)
 }
 
 /*  displays time in a format fit for human consumption.
-    uses ctime to build a string then picks parts out of it.
-    Note: %12.12s prints a string 12 chars wide and limits
-    it to 12 chars.
 */
 void showtime(long timeval)
 {
-    char *cp; // to hold address of time
-    cp = ctime(&timeval); // convert time to string
-                          // string looks like
-                          // Mon Dec 21 11:12:20 2020
-                          // 012345678901234567890123
-    printf("%12.12s", cp + 4); // pick 12 chars from pos 4     
+    struct tm * timeinfo;
+    char buffer [80];
+    
+    timeinfo = localtime(&timeval);
 
+    strftime(buffer, 80, "%Y-%m-%d %I:%M", timeinfo);    
+    printf("%12s", buffer);
 }
-
