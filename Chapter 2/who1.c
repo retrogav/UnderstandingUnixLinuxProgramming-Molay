@@ -68,7 +68,7 @@ void show_info(struct utmp *utbufp)
     showtime(utbufp->ut_tv.tv_sec); // display time    
     printf(" ");
 #ifdef SHOWHOST
-    if(utbufp->ut_host[0] != '\0')
+    if (utbufp->ut_host[0] != '\0')
     {
         printf("(%s)", utbufp->ut_host); // the host
     }
