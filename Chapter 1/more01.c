@@ -16,8 +16,8 @@
 #define PAGELEN 24
 #define LINELEN 512
 
-void do_more(FILE *);
-int see_more(FILE *);
+void do_more(FILE *fp);
+int see_more(FILE *cmd);
 
 int main(int ac, char *av[])
 {
@@ -48,8 +48,7 @@ int main(int ac, char *av[])
 void do_more(FILE *fp)
 {
     char line[LINELEN];
-    int num_of_lines = 0;
-    int see_more(FILE *);
+    int num_of_lines = 0;    
     int reply;
     FILE *fp_tty;
 
