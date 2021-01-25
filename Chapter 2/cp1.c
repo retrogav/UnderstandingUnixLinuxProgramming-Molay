@@ -43,7 +43,7 @@ int main(int ac, char *av[])
         oops("Cannot creat", av[2]);
     }    
 
-    // copy files
+    // copy files. read() returns 0 when the end of the file is reached
     while ((n_chars = read(in_fd, buf, BUFFERSIZE)) > 0)
     {
         if (write(out_fd, buf, n_chars) != n_chars)
