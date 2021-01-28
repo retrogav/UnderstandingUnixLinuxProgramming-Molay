@@ -25,13 +25,16 @@ void show_info(struct utmp *utbufp);
 
 int main()
 {
-    struct utmp utbuf; // read info into here
-    int utmpfd;        // file descriptor
+    // utmp strut is about login records. The record info gets read into it
+    struct utmp utbuf;
+
+    int utmpfd; // file descriptor
     int reclen = sizeof(utbuf);
 
+    // UTMP_FILE is in utmp.h
     if ((utmpfd = open(UTMP_FILE, O_RDONLY)) == -1)
     {
-        perror(UTMP_FILE); // UTMP_FILE is in utmp.h
+        perror(UTMP_FILE); 
         exit(1);
     }
     while (read(utmpfd, &utbuf, reclen) == reclen)
@@ -61,9 +64,9 @@ void show_info(struct utmp *utbufp)
                     padded with blank spaces
         .number     precision. The minimum number of digits to be written
     */   
-    printf("%-8.8s", utbufp->ut_name); // the logname
+    printf("%-8.8s", utbufp->ut_user); // the logname
     printf(" ");
-    printf("%-12.8s", utbufp->ut_line); // the tty
+    printf("%-12.8s", utbufp->ut_line); // the tty    
     printf(" ");
     showtime(utbufp->ut_tv.tv_sec); // display time    
     printf(" ");
@@ -76,8 +79,7 @@ void show_info(struct utmp *utbufp)
     printf("\n");
 }
 
-/*  displays time in a format fit for human consumption.
-*/
+/*  displays time in a format fit for human consumption */
 void showtime(long timeval)
 {
     struct tm * timeinfo;
@@ -85,6 +87,14 @@ void showtime(long timeval)
     
     timeinfo = localtime(&timeval);
 
-    strftime(buffer, 80, "%Y-%m-%d %I:%M", timeinfo);    
+    /* strftime() uses the struct tm. 
+    Character sequences in the format specification -
+        %Y  The year as a decimal number
+        %m  The  month (01 to 12)
+        %d  The  day  of  the  month (01 to 31)
+        %H  The hour using a 24-hour clock (00 to 23)
+        %M  The minute (00 to 59)
+    */
+    strftime(buffer, 80, "%Y-%m-%d %H:%M", timeinfo);    
     printf("%12s", buffer);
 }
