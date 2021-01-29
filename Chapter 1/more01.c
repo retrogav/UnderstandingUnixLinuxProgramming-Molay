@@ -19,24 +19,18 @@
 void do_more(FILE *fp);
 int see_more(FILE *cmd);
 
-int main(int ac, char *av[])
-{
+int main(int ac, char *av[]) {
     FILE *fp;
-    if (ac == 1)
-    {
+    if (ac == 1) {
         do_more(stdin);
     }
-    else
-    {
-        while (--ac)
-        {
-            if ((fp = fopen(*++av, "r")) != NULL)
-            {
+    else {
+        while (--ac) {
+            if ((fp = fopen(*++av, "r")) != NULL) {
                 do_more(fp);
                 fclose(fp);
             }
-            else
-            {
+            else {
                 exit(1);
             }
         }
@@ -45,32 +39,26 @@ int main(int ac, char *av[])
 }
 
 // read PAGELEN lines, then call see_more() for further instructions
-void do_more(FILE *fp)
-{
+void do_more(FILE *fp) {
     char line[LINELEN];
     int num_of_lines = 0;    
     int reply;
     FILE *fp_tty;
 
     fp_tty = fopen("/dev/tty", "r");                // command stream
-    if (fp_tty == NULL)                             // if open fails
-    {
+    if (fp_tty == NULL) {                           // if open fails    
         exit(1);
     }
 
-    while (fgets(line, LINELEN, fp))                // more input
-    {
-        if (num_of_lines == PAGELEN)                // full screen?
-        {
+    while (fgets(line, LINELEN, fp)) {              // more input    
+        if (num_of_lines == PAGELEN) {              // full screen?        
             reply = see_more(fp_tty);               // pass the file
-            if (reply == 0)                         // user typed q
-            {
+            if (reply == 0) {                       // user typed q            
                 break;
             }
             num_of_lines -= reply;                  // reset count
         }
-        if (fputs(line, stdout) == EOF)             // show line
-        {
+        if (fputs(line, stdout) == EOF) {           // show line        
             exit(1);                                // or die
         }
         num_of_lines++;                             // count it
@@ -80,23 +68,18 @@ void do_more(FILE *fp)
 /*  print message, wait for response, return # of lines to advance
     q means no, space means yes, CR means one line
 */
-int see_more(FILE *cmd)
-{
+int see_more(FILE *cmd) {
     int c;
 
     printf("\033[7m more? \033[m");                 // reverse on a vt100
-    while ((c = getc(cmd)) != EOF)                  // reads from tty
-    {
-        if (c == 'q')  
-        {
+    while ((c = getc(cmd)) != EOF) {                // reads from tty    
+        if (c == 'q') {
             return 0;
         }
-        if (c == ' ')                               // space shows next page
-        {
+        if (c == ' ') {                             // space shows next page        
             return PAGELEN;                         // how many to show
         }
-        if (c == '\n')                              // enter key shows 1 line
-        {
+        if (c == '\n') {                            // enter key shows 1 line        
             return 1;
         }
     }
