@@ -16,7 +16,6 @@
 #include <utmp.h> // for utmp struct
 #include <stdlib.h> // for exit()
 #include <time.h> // for strftime()
-#include <sys/types.h>
 
 #include "who1.h"
 
@@ -27,31 +26,13 @@ void showtime(long timeval);
 
 int main() {
     // utmp strut is about login records. The record info gets read into it
-    struct utmp *utbufp; // holds pointer to next rec
-    //struct utmp * utmp_next(); // returns pointer to next
+    struct utmp *utbufp; // holds pointer to next rec  
 
-    //int utmpfd; // file descriptor
-    //int reclen = sizeof(utbuf);
     
-    // UTMP_FILE is in utmp.h
-    /*
-    if ((utmpfd = open(UTMP_FILE, O_RDONLY)) == -1)
-    {
-        perror(UTMP_FILE); 
-        exit(1);
-    }*/
-
     if (utmp_open(UTMP_FILE) == -1) {
         perror(UTMP_FILE);
         exit(1);
-    }
-
-    /*
-    while (read(utmpfd, &utbuf, reclen) == reclen)
-    {
-        show_info(&utbuf);
-    }
-    close(utmpfd);*/
+    }    
 
     while ((utbufp = utmp_next()) != ((struct utmp *) NULL)) {
         show_info(utbufp);        
