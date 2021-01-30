@@ -13,9 +13,10 @@
 #include <unistd.h>  // for read(), close()
 #include <utmp.h> // for utmp struct
 
+#include "who1.h"
+
 #define BUFFERSIZE  4096
 #define NRECS       16
-#define NULLUT      ((struct utmp *) NULL)
 #define UTSIZE      (sizeof(struct utmp))
 
 static char utmpbuf[NRECS * UTSIZE]; // storage
