@@ -26,8 +26,7 @@ void showtime(long timeval);
 
 int main() {
     // utmp strut is about login records. The record info gets read into it
-    struct utmp *utbufp; // holds pointer to next rec  
-
+    struct utmp *utbufp; // holds pointer to next rec 
     
     if (utmp_open(UTMP_FILE) == -1) {
         perror(UTMP_FILE);
