@@ -8,40 +8,57 @@
     0.1 first ver
     0.2 supress empty records
         formats time correctly
-    0.3 align formating of logon time to look the same as who           
+    0.3 align formating of logon time to look the same as who
+    0.4 added buffering with an array of structs
 */
 
 #include <stdio.h>
-#include <utmp.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <utmp.h> // for utmp struct
 #include <stdlib.h> // for exit()
-#include <time.h>
+#include <time.h> // for strftime()
+#include <sys/types.h>
+
+#include "who1.h"
 
 #define SHOWHOST // include remote machine on output
 
-void showtime(long timeval);
 void show_info(struct utmp *utbufp);
+void showtime(long timeval);
 
-int main()
-{
+int main() {
     // utmp strut is about login records. The record info gets read into it
-    struct utmp utbuf;
+    struct utmp *utbufp; // holds pointer to next rec
+    //struct utmp * utmp_next(); // returns pointer to next
 
-    int utmpfd; // file descriptor
-    int reclen = sizeof(utbuf);
-
+    //int utmpfd; // file descriptor
+    //int reclen = sizeof(utbuf);
+    
     // UTMP_FILE is in utmp.h
+    /*
     if ((utmpfd = open(UTMP_FILE, O_RDONLY)) == -1)
     {
         perror(UTMP_FILE); 
         exit(1);
+    }*/
+
+    if (utmp_open(UTMP_FILE) == -1) {
+        perror(UTMP_FILE);
+        exit(1);
     }
+
+    /*
     while (read(utmpfd, &utbuf, reclen) == reclen)
     {
         show_info(&utbuf);
     }
-    close(utmpfd);
+    close(utmpfd);*/
+
+    while ((utbufp = utmp_next()) != ((struct utmp *) NULL)) {
+        show_info(utbufp);        
+    }
+
+    utmp_close();    
+
     return 0;
 }
 
@@ -49,10 +66,8 @@ int main()
     displays nothing if record has no username
     note - these sizes should not be hardwired
 */
-void show_info(struct utmp *utbufp)
-{
-    if (utbufp->ut_type != USER_PROCESS)
-    {
+void show_info(struct utmp *utbufp) {
+    if (utbufp->ut_type != USER_PROCESS) {
         return;
     }
 
@@ -71,8 +86,7 @@ void show_info(struct utmp *utbufp)
     showtime(utbufp->ut_tv.tv_sec); // display time    
     printf(" ");
 #ifdef SHOWHOST
-    if (utbufp->ut_host[0] != '\0')
-    {
+    if (utbufp->ut_host[0] != '\0') {
         printf("(%s)", utbufp->ut_host); // the host
     }
 #endif
@@ -80,8 +94,7 @@ void show_info(struct utmp *utbufp)
 }
 
 /*  displays time in a format fit for human consumption */
-void showtime(long timeval)
-{
+void showtime(long timeval) {
     struct tm * timeinfo;
     char buffer [80];
     
