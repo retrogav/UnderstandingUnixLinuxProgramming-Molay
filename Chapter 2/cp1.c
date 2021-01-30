@@ -9,12 +9,12 @@
 */
 
 #include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <unistd.h> // for read(), close()
+#include <fcntl.h> // for open()
 #include <stdlib.h> // for exit()
 
-#define BUFFERSIZE 4096
-#define COPYMODE 0644
+#define BUFFERSIZE  4096
+#define COPYMODE    0644
 
 void oops(char *s1, char *s2);
 
