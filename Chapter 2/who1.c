@@ -10,6 +10,9 @@
         formats time correctly
     0.3 align formating of logon time to look the same as who
     0.4 added buffering with an array of structs
+
+    To compile -
+    cc who1.c utmplib.c -o who1
 */
 
 #include <stdio.h>

@@ -5,7 +5,10 @@
     Uses read and write with customizable buffer size
 
     Version history
-    0.1 first ver          
+    0.1 first ver
+
+    To compile -
+    cc cp1.c -o cp1          
 */
 
 #include <stdio.h>

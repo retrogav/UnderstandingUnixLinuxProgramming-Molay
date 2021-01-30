@@ -7,7 +7,9 @@
     0.1 first ver
     0.2 changed user input to read from /dev/tty (keyboard) instead of from
         the same stream as the data
-        
+
+    To compile-
+    cc more01.c -o more01        
 */
 
 #include <stdio.h>
