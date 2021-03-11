@@ -50,7 +50,6 @@ int logout_tty(char *line) {
 ut_tv.tv_sec in the while loop below. time() expects a type time_t. 
 But ut_tv.tv_sec in struct utmp is int32_t . Because of this the utmp man page
 recommends the use of gettimeofday() instead of time().
-
 */
     // search and replace
     while (read(fd, &rec, len) == len) {
