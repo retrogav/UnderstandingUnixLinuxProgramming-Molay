@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 int logout_tty(char *line) {    
     int fd;
     struct utmp rec;
-    struct timeval tv; // for use within gettimeofday()
+    struct timeval tv; // added code. for use within gettimeofday(). 
     int len = sizeof(struct utmp);
     int retval = -1; // assume an error
 
@@ -55,8 +55,9 @@ recommends the use of gettimeofday() instead of time().
     while (read(fd, &rec, len) == len) {
         if (strncmp(rec.ut_line, line, sizeof(rec.ut_line)) == 0) {
             rec.ut_type = DEAD_PROCESS; // set type
-            if ((gettimeofday(&tv, NULL)) != -1) { // and time
-                rec.ut_tv.tv_sec = tv.tv_sec;                        
+            //if (time(&rec.ut_time) != -1) // problem code. set time
+            if ((gettimeofday(&tv, NULL)) != -1) { // added code. set time
+                rec.ut_tv.tv_sec = tv.tv_sec; // added code                       
                 if (lseek(fd, -len, SEEK_CUR) != -1) { // back up
                     if (write(fd, &rec, len) == len) { // update
                         retval = 0; // success
